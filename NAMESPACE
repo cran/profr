@@ -1,1 +1,4 @@
-exportPattern("^[^\\.]")
+S3method(plot, profr)
+export(ggplot.profr)
+export(parse_rprof)
+export(profr)

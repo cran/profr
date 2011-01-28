@@ -1,16 +1,19 @@
-# Parse Rprof output
-# Parses the output of \code{\link{Rprof}} into an alternative format described in \code{\link{profr}}.
-# 
-# This produces a flat data frame, which is somewhat easier to summarise
-# and visualise.
-# 
-# @argument path to \code{\link{Rprof}} output
-# @argument real-time interval between samples
-# @keyword debugging
-# @value \code{\link{data.frame}} of class \code{profr}
-# @seealso \code{\link{profr}} for profiling and parsing
-#X nesting <- parse_rprof(system.file("samples", "nesting.rprof", package="profr"))
-#X diamonds <- parse_rprof(system.file("samples", "reshape.rprof", package="profr"))
+#' Parse Rprof output.
+#' Parses the output of \code{\link{Rprof}} into an alternative format
+#' described in \code{\link{profr}}.
+#' 
+#' This produces a flat data frame, which is somewhat easier to summarise
+#' and visualise.
+#' 
+#' @param path path to \code{\link{Rprof}} output
+#' @param interval real-time interval between samples (in seconds)
+#' @keywords debugging
+#' @return \code{\link{data.frame}} of class \code{profr}
+#' @seealso \code{\link{profr}} for profiling and parsing
+#' @export
+#' @examples
+#' nesting <- parse_rprof(system.file("samples", "nesting.rprof", package="profr"))
+#' diamonds <- parse_rprof(system.file("samples", "reshape.rprof", package="profr"))
 parse_rprof <- function(path, interval=0.02) {
   lines <- scan(path, what="character", sep="\n")
   
@@ -58,14 +61,16 @@ parse_rprof <- function(path, interval=0.02) {
     start = start, 
     end = start + 1,
     leaf = 1:depth == depth,
-    hist = sapply(1:depth, function(i) digest(call[seq_len(i)]))
+    hist = sapply(1:depth, function(i) digest::digest(call[seq_len(i)])),
+    stringsAsFactors = TRUE
   ))
   
   depth <- sapply(calls, length)
   calldf <- data.frame(
     call = array(unclass(calls)),
     start = 0:(length(calls)-1),
-    depth = depth
+    depth = depth,
+    stringsAsFactors = TRUE
   )
   
   do.call(rbind, apply(calldf, 1, .expand.call))
