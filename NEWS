@@ -1,4 +1,19 @@
-Changes in version 0.2 
+Version 0.3.1
+=============
+
+* Fixes for outstanding R CMD check problems
+
+Version 0.3
+===========
+
+* Rewritten parsing to be about 3x faster
+
+* Corrected bug in parsing that lead to incorrect collapsing of non-adjacent
+  functions
+
+* Get `ggplot2.profr` working again.
+
+Changes in version 0.2
 ------------------------------------------------------------------------------
 
 * Updated documentation
